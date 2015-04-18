@@ -1,10 +1,9 @@
 //Author: Thomas Opitz
-//Compile with: gcc -lpthread -lm
+//Compile with: gcc -lpthread
 
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 typedef struct element_t {
     float * sub_vector;
@@ -16,25 +15,27 @@ float * vector;
 float * result;
 
 /**
-*Calculate part of the Euclidean norm
+*Calculate part of the maximum norm
 */
-void * calculate_euclidean(void * arg) {
+void * calculate_maximum(void * arg) {
     element_t * element = (element_t *) arg;
 
-    float sum = 0;
+    float maximum = 0;
 
     int k;
     for (k = 0; k < element->length; k++) {
-        sum += element->sub_vector[k];
+        if (element->sub_vector[k] > maximum) {
+            maximum = element->sub_vector[k];
+        }
     }
 
-    result[element->id] = sum;
+    result[element->id] = maximum;
 }
 
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
-        printf("Usage euclidean <n> <p>\n");
+        printf("Usage maximum <n> <p>\n");
         return 0;
     }
 
@@ -69,7 +70,7 @@ int main(int argc, char *argv[]) {
     elements[p - 1].length += (n % p);
 
     for (k = 0; k < p; k++) {
-        pthread_create(&tid[k], NULL, &calculate_euclidean, &elements[k]);
+        pthread_create(&tid[k], NULL, &calculate_maximum, &elements[k]);
     }
 
     for (k = 0; k < p; k++) {
@@ -77,11 +78,13 @@ int main(int argc, char *argv[]) {
     }
 
     //Reduce result of threads
-    float result_sum = 0;
+    float result_maximum = 0;
     for (k = 0; k < p; k++) {
-        result_sum += result[k];
+        if (result[k] > result_maximum) {
+            result_maximum = result[k];
+        }
     }
 
-    printf("Euclidean Norm: %f\n", sqrt(result_sum));
+    printf("Maximum Norm: %f\n", result_maximum);
 }
 
