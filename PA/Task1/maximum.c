@@ -51,8 +51,17 @@ int main(int argc, char *argv[]) {
     //Fill with numbers
     int t;
     for (t = 0; t < n; t++) {
-        vector[t] = t * 1;
+        vector[t] = rand() % 1000000;
     }
+
+    //Calculate norm sequential for comparison
+    float sequential_norm = 0;
+    for (t = 0; t < n; t++) {
+        if (vector[t] > sequential_norm) {
+            sequential_norm = vector[t];
+        }
+    }
+
 
     pthread_t * tid = malloc(p * sizeof(*tid));
     element_t * elements = malloc(p * sizeof(*elements));
@@ -85,6 +94,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("Maximum Norm: %f\n", result_maximum);
+    printf("Sequential Maximum Norm: %f\n", sequential_norm);
+    printf("Parallel Maximum Norm: %f\n", result_maximum);
 }
 

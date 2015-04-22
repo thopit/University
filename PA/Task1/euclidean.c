@@ -25,7 +25,7 @@ void * calculate_euclidean(void * arg) {
 
     int k;
     for (k = 0; k < element->length; k++) {
-        sum += element->sub_vector[k];
+        sum += element->sub_vector[k] * element->sub_vector[k];
     }
 
     result[element->id] = sum;
@@ -37,6 +37,8 @@ int main(int argc, char *argv[]) {
         printf("Usage euclidean <n> <p>\n");
         return 0;
     }
+    //Generate random seed
+    srand (time(NULL));
 
     int n = atoi(argv[1]);
     int p = atoi(argv[2]);
@@ -50,8 +52,16 @@ int main(int argc, char *argv[]) {
     //Fill with numbers
     int t;
     for (t = 0; t < n; t++) {
-        vector[t] = t * 1;
+        vector[t] = rand() % 1000000;
     }
+
+    //Calculate norm sequential for comparison
+    float sequential_norm = 0;
+    for (t = 0; t < n; t++) {
+        sequential_norm += vector[t] * vector[t];
+    }
+    sequential_norm = sqrt(sequential_norm);
+
 
     pthread_t * tid = malloc(p * sizeof(*tid));
     element_t * elements = malloc(p * sizeof(*elements));
@@ -82,6 +92,7 @@ int main(int argc, char *argv[]) {
         result_sum += result[k];
     }
 
-    printf("Euclidean Norm: %f\n", sqrt(result_sum));
+    printf("Sequential Euclidean Norm: %f\n", sequential_norm);
+    printf("Parallel Euclidean Norm: %f\n", sqrt(result_sum));
 }
 
