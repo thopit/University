@@ -82,11 +82,11 @@ void main()
 	shared_ptr<node> child1(new check_bool_node(false));
 	shared_ptr<node> child2(new check_bool_node(true));
 
-	shared_ptr<node> leaf1(new leaf("First"));
-	shared_ptr<node> leaf2(new leaf("Second"));
+	shared_ptr<node> leaf1(new leaf("First Leaf"));
+	shared_ptr<node> leaf2(new leaf("Second Leaf"));
 
-	shared_ptr<node> leaf3(new leaf("Third"));
-	shared_ptr<node> leaf4(new leaf("Fourth"));
+	shared_ptr<node> leaf3(new leaf("Third Leaf"));
+	shared_ptr<node> leaf4(new leaf("Fourth Leaf"));
 
 	root->left_node_ = child1;
 	root->right_node_ = child2;
@@ -98,4 +98,6 @@ void main()
 	child2->right_node_ = leaf4;
 
 	root->query();
+
+	cin.get();
 }
