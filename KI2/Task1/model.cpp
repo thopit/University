@@ -57,7 +57,8 @@ void model::create_creature_at_cursor
 
 void model::perform_step()
 {
-	for (std::list<std::shared_ptr<creature>>::iterator it = creatures_.begin(); it != creatures_.end(); ++it) {
+	for (std::list<std::shared_ptr<creature>>::iterator it = creatures_.begin(); it != creatures_.end(); ++it) 
+	{
 		int x = it->get()->x();
 		int y = it->get()->y();
 		creature_prototype prototype = it->get()->prototype;
@@ -68,13 +69,15 @@ void model::perform_step()
 
 		//Land creature is on water
 		if (prototype.habitat() == prototype.habitat_land &&
-			(tile.climate() == tile.deep_water || tile.climate() == tile.shallow_water)) {
+			(tile.climate() == tile.deep_water || tile.climate() == tile.shallow_water)) 
+		{
 			std::cout << "Land creature is on water";
 			it->get()->lifetime -= 50;
 		}
 		//Water creature is on land
 		else if (prototype.habitat() == prototype.habitat_water &&
-			(tile.climate() == tile.earth || tile.climate() == tile.sand || tile.climate() == tile.snow || tile.climate() == tile.stones)) {
+			(tile.climate() == tile.earth || tile.climate() == tile.sand || tile.climate() == tile.snow || tile.climate() == tile.stones)) 
+		{
 			std::cout << "Water creature is on land";
 			it->get()->lifetime -= 50;
 		}
